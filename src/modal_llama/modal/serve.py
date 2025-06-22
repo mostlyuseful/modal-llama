@@ -1,3 +1,22 @@
+# This file is part of Modal Llama.
+# Modal Llama is a wrapper around llama.cpp, ik_llama.cpp, llama-swap and nginx to run them on Modal and other cloud providers.
+# Copyright (C) 2025  Maurice-Pascal Sonnemann (mpsonnemann@gmail.com)
+#
+# Modal Llama is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Modal Llama is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# The source code is available at https://github.com/mostlyuseful/modal-llama
+
 # Adapted from example at https://modal.com/blog/how_to_run_deepseek_r1_distilled_vllm
 
 from dataclasses import dataclass
