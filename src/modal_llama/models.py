@@ -42,7 +42,7 @@ def find_gguf_entrypoint(
     if multi_file_candidates:
         # Sort by the number in the filename and return the first one
         multi_file_candidates.sort(
-            key=lambda p: int(re.search(r"(\d+)-of-\d+", p.name).group(1)) # type: ignore
+            key=lambda p: int(re.search(r"(\d+)-of-\d+", p.name).group(1))  # type: ignore
         )
         return multi_file_candidates[0]
 

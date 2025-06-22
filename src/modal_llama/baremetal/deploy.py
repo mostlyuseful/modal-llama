@@ -115,7 +115,9 @@ def serve(
     public_ip = result.stdout.strip()
     print("\nDeployment complete!")
     print(f"  Access the app at: http://{public_ip}:{remote_nginx_port}/\n")
-    print(f"  Or via SSH tunnel: ssh -L 1234:{public_ip}:{remote_nginx_port} {user}@{host} (and then connect to localhost:1234)\n")
+    print(
+        f"  Or via SSH tunnel: ssh -L 1234:{public_ip}:{remote_nginx_port} {user}@{host} (and then connect to localhost:1234)\n"
+    )
 
 
 if __name__ == "__main__":

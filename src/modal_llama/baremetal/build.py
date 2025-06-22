@@ -175,7 +175,9 @@ def ensure_nodejs():
             check=True,
         )
         # First, uninstall any existing Node.js versions: nodejs, npm and libnode*
-        subprocess.run(["apt-get", "remove", "-y", "nodejs", "npm", "libnode*"], check=True)
+        subprocess.run(
+            ["apt-get", "remove", "-y", "nodejs", "npm", "libnode*"], check=True
+        )
         # Then, install upgraded Node.js
         subprocess.run(["apt-get", "install", "-y", "nodejs"], check=True)
         installed_version = (
@@ -212,6 +214,7 @@ def ensure_go():
         subprocess.run(["export", "PATH=$PATH:/usr/local/go/bin"], shell=True)
         typer.echo("Go installed successfully.")
 
+
 def build_llama_swap(repo_dir: str | Path) -> BuildInfo:
     """
     Build llama_swap
@@ -246,7 +249,12 @@ def build_llama_swap(repo_dir: str | Path) -> BuildInfo:
             check=True,
         )
 
-    subprocess.run("PATH=$PATH:/usr/lib/go-1.23/bin make linux", cwd=str(repo_dir), check=True, shell=True)
+    subprocess.run(
+        "PATH=$PATH:/usr/lib/go-1.23/bin make linux",
+        cwd=str(repo_dir),
+        check=True,
+        shell=True,
+    )
 
     return BuildInfo(bin_dir=Path(repo_dir) / "build")
 

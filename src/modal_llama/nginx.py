@@ -1,10 +1,9 @@
 import tempfile
 import subprocess
 
+
 def start_nginx_reverse_proxy(
-    api_token: str|None, 
-    llama_swap_port: int, 
-    listen_port: int
+    api_token: str | None, llama_swap_port: int, listen_port: int
 ):
     """
     Starts an Nginx reverse proxy that:
@@ -14,10 +13,14 @@ def start_nginx_reverse_proxy(
     """
     # Create temporary nginx config file
     # Conditionally include bearer token check
-    auth_block = f"""
+    auth_block = (
+        f"""
                 if ($http_authorization != "Bearer {api_token}") {{
                     return 403;
-                }}""" if api_token else ""
+                }}"""
+        if api_token
+        else ""
+    )
 
     config_content = f"""events {{
     worker_connections 32;
@@ -56,20 +59,20 @@ http {{
         }}
     }}
 }}"""
-    
+
     # Write config to temp file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.conf', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".conf", delete=False) as f:
         f.write(config_content)
         config_path = f.name
 
     print(f"\n\n\n=== Generated Nginx config ===\n{config_content}\n\n\n")
-    
+
     # Start nginx with the config
     nginx_process = subprocess.Popen(
-        ['nginx', '-c', config_path, '-g', 'daemon off;'],
+        ["nginx", "-c", config_path, "-g", "daemon off;"],
         stdout=None,
         stderr=None,
     )
-    
+
     # Return the process object and config path
     return nginx_process, config_path

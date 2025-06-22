@@ -6,7 +6,11 @@ import os
 
 from modal import App, Image, Secret, Volume, concurrent, web_server, enable_output
 
-from modal_llama.modal.build import build_ik_llama_cpp, build_llama_cpp, build_llama_swap
+from modal_llama.modal.build import (
+    build_ik_llama_cpp,
+    build_llama_cpp,
+    build_llama_swap,
+)
 from modal_llama.llama_swap import LlamaSwapConfig, start_llama_swap_server
 from modal_llama.models import prep_common_models
 from modal_llama.nginx import start_nginx_reverse_proxy
@@ -66,11 +70,12 @@ def prep():
     # Monkey patch for huggingface_hub to use the correct cache directory
     # This is necessary to ensure that the models are downloaded by gguf()->snapshot_download() to the correct location.
     import huggingface_hub.constants
+
     huggingface_hub.constants.HF_HUB_CACHE = MODELS_PATH
     # huggingface_hub.constants.HF_HUB_ENABLE_HF_TRANSFER = True
-    
+
     cfg = LlamaSwapConfig(listen_port=8080)
-    
+
     print("Adding models to configuration and downloading them...")
     prep_common_models(
         cfg,
@@ -92,7 +97,7 @@ def prep():
     max_containers=1,
     volumes={MODELS_PATH: models_volume},
     timeout=int(timedelta(minutes=10).total_seconds()),
-    secrets=[Secret.from_dotenv()]
+    secrets=[Secret.from_dotenv()],
 )
 @concurrent(max_inputs=100)
 @web_server(
@@ -105,14 +110,20 @@ def serve():
 
     api_token = os.environ.get("API_TOKEN", None)
     if api_token is None:
-        print("API_TOKEN is not set, application is not protected by token authentication!")
-        print("You can set it by creating a .env file with the line: API_TOKEN=your_token_here")
+        print(
+            "API_TOKEN is not set, application is not protected by token authentication!"
+        )
+        print(
+            "You can set it by creating a .env file with the line: API_TOKEN=your_token_here"
+        )
 
     # Start the LlamaSwap server in detached mode
     # This will run in the background and allow the app to continue running
     # It's required so modal can manage the lifecycle of the server
     # even if this feels a bit hacky :)
-    start_nginx_reverse_proxy(api_token=api_token, llama_swap_port=env.cfg.listen_port, listen_port=nginx_port)
+    start_nginx_reverse_proxy(
+        api_token=api_token, llama_swap_port=env.cfg.listen_port, listen_port=nginx_port
+    )
     start_llama_swap_server(llama_swap_build.bin_dir, env.cfg)
 
 

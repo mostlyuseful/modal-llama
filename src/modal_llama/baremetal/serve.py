@@ -73,9 +73,17 @@ def serve(
     print("Starting llama-swap server...")
     api_token = os.environ.get("API_TOKEN", None)
     if api_token is None:
-        print("API_TOKEN is not set, application is not protected by token authentication!")
-        print("You can set it by creating a .env file with the line: API_TOKEN=your_token_here")
-    nginx_proc, _ = start_nginx_reverse_proxy(api_token=api_token, llama_swap_port=llama_swap_listen_port, listen_port=nginx_port)
+        print(
+            "API_TOKEN is not set, application is not protected by token authentication!"
+        )
+        print(
+            "You can set it by creating a .env file with the line: API_TOKEN=your_token_here"
+        )
+    nginx_proc, _ = start_nginx_reverse_proxy(
+        api_token=api_token,
+        llama_swap_port=llama_swap_listen_port,
+        listen_port=nginx_port,
+    )
     llama_swap_proc = start_llama_swap_server(llama_swap_bin_dir, cfg)
     if detach:
         print("Running in detached mode, exiting immediately...")
