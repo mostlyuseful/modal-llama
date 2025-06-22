@@ -16,6 +16,7 @@ dependencies = [
     "more-itertools>=10.7.0",
     "python-dotenv>=1.1.0",
     "pyyaml>=6.0.2",
+    "runpod>=1.7.12",
     "tqdm>=4.67.1",
     "typer>=0.16.0",
 ]
